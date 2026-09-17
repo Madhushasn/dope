@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D.O.P.E. Bird Personality Test</title>
+<style>
+  :root{
+    --sun:#ffbc42; --rasp:#d81159; --berry:#8f2d56; --teal:#218380; --frost:#73d2de;
+
+    --eagle:#d81159; --owl:#8f2d56; --peacock:#218380; --dove:#2b8fa8;
+    --eagle-soft:#fde4ec; --owl-soft:#f7e7ed; --peacock-soft:#ddf0ef; --dove-soft:#e2f4f9;
+
+    --ink:#1f2933; --ink-soft:#5b6770; --line:#e8e3dc; --card:#ffffff;
+    --radius:20px; --shadow:0 10px 30px rgba(31,41,51,.08), 0 2px 6px rgba(31,41,51,.05);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    color:var(--ink); line-height:1.55; min-height:100vh; -webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1100px 620px at 12% -8%, #fff3dc 0%, rgba(255,243,220,0) 60%),
+      radial-gradient(900px 560px at 92% 4%, #e3f5f4 0%, rgba(227,245,244,0) 62%),
+      linear-gradient(180deg,#fffdf8 0%,#f2f8f9 100%);
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:26px 18px 60px;}
+
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em;}
+  .brand .dot{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;font-size:19px;
+    background:linear-gradient(135deg,var(--sun),var(--rasp));box-shadow:var(--shadow);}
+  .brand small{display:block;font-weight:500;font-size:11.5px;color:var(--ink-soft);letter-spacing:.14em;text-transform:uppercase;}
+  .sound-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 14px;
+    font:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;}
+  .sound-btn:hover{border-color:var(--frost);color:var(--teal);}
+
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid rgba(232,227,220,.9);}
+  .pad{padding:30px 32px;}
+
+  h1{font-size:30px;line-height:1.2;margin:0 0 10px;letter-spacing:-.01em;}
+  p.lede{color:var(--ink-soft);margin:0 0 20px;font-size:15.5px;}
+
+  .birds{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 24px;}
+  .bird-chip{border-radius:16px;padding:16px 12px;text-align:center;}
+  .bird-chip .ico{font-size:30px;line-height:1;}
+  .bird-chip .nm{font-weight:700;margin-top:8px;font-size:15px;}
+  .bird-chip .ds{font-size:12.5px;color:var(--ink-soft);margin-top:3px;line-height:1.35;}
+  .b-D{background:var(--dove-soft);}    .b-D .nm{color:var(--dove);}
+  .b-O{background:var(--owl-soft);}     .b-O .nm{color:var(--owl);}
+  .b-P{background:var(--peacock-soft);} .b-P .nm{color:var(--peacock);}
+  .b-E{background:var(--eagle-soft);}   .b-E .nm{color:var(--eagle);}
+
+  .note{background:#fff8e9;border:1px solid #ffe2ad;border-radius:14px;padding:13px 16px;font-size:13.5px;color:#7a5a17;margin-bottom:24px;}
+
+  /* ---------- welcome page ---------- */
+  .welcome-hero{position:relative;overflow:hidden;text-align:center;color:#fff;
+    border-radius:var(--radius) var(--radius) 0 0;padding:46px 32px 40px;
+    background:linear-gradient(135deg,#8f2d56 0%,#d81159 58%,#ff8f4d 128%);}
+  .welcome-hero::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-150px;height:240px;
+    border-radius:50%;background:rgba(255,255,255,.09);}
+  .flock{position:relative;display:flex;justify-content:center;gap:20px;font-size:40px;line-height:1;}
+  .flock span{display:inline-block;animation:bob 3.4s ease-in-out infinite;filter:drop-shadow(0 8px 12px rgba(0,0,0,.22));}
+  .flock span:nth-child(2){animation-delay:.35s}
+  .flock span:nth-child(3){animation-delay:.7s}
+  .flock span:nth-child(4){animation-delay:1.05s}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .welcome-hero h1{position:relative;font-size:38px;margin:20px 0 10px;color:#fff;letter-spacing:-.02em;}
+  .welcome-hero .sub{position:relative;margin:0 auto;max-width:560px;font-size:16.5px;opacity:.95;}
+  .welcome-hero .meta{position:relative;margin-top:18px;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;}
+
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 26px;}
+  .fact{background:#fcfcfb;border:1px solid var(--line);border-radius:16px;padding:16px 12px;text-align:center;}
+  .fact .n{font-size:25px;font-weight:700;color:var(--rasp);line-height:1.1;}
+  .fact .l{font-size:12.5px;color:var(--ink-soft);margin-top:3px;}
+
+  .checks{list-style:none;margin:0 0 26px;padding:0;display:grid;gap:10px;}
+  .checks li{display:flex;gap:11px;align-items:flex-start;font-size:15px;}
+  .checks li::before{content:"✓";flex:0 0 auto;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;
+    background:var(--peacock-soft);color:var(--peacock);font-size:12.5px;font-weight:700;margin-top:2px;}
+
+  .name-field{display:block;margin:0 0 22px;}
+  .name-field span{display:block;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:7px;}
+  .name-field input{width:100%;max-width:340px;font:inherit;font-size:15.5px;padding:12px 16px;
+    border:1.5px solid var(--line);border-radius:13px;background:#fdfdfc;color:var(--ink);}
+  .name-field input:focus{outline:none;border-color:var(--rasp);background:#fff;}
+  .name-field small{display:block;margin-top:7px;font-size:12.5px;color:#9aa4ab;}
+
+  .hero-eyebrow{position:relative;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:10px;}
+
+  .btn{font:inherit;font-weight:650;font-size:15.5px;border:none;cursor:pointer;padding:14px 30px;border-radius:999px;color:#fff;
+    background:linear-gradient(135deg,var(--rasp),var(--berry));box-shadow:0 8px 20px rgba(216,17,89,.25);
+    transition:transform .12s ease, box-shadow .12s ease;}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(216,17,89,.3);}
+  .btn:active{transform:translateY(0);}
+  .btn.ghost{background:#fff;color:var(--ink-soft);border:1px solid var(--line);box-shadow:none;font-weight:600;}
+  .btn.ghost:hover{color:var(--teal);border-color:var(--frost);transform:none;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none;}
+
+  .prog-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink-soft);margin-bottom:9px;}
+  .prog-track{height:8px;border-radius:99px;background:#eef1f2;overflow:hidden;}
+  .prog-fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--sun),var(--rasp));transition:width .35s cubic-bezier(.4,0,.2,1);}
+
+  .qnum{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--rasp);font-weight:700;margin-bottom:8px;}
+  .qtext{font-size:22px;font-weight:650;line-height:1.35;margin:0 0 22px;}
+  .opts{display:grid;gap:11px;}
+  .opt{display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;
+    background:#fdfdfc;border:1.5px solid var(--line);border-radius:15px;padding:15px 17px;
+    font:inherit;font-size:15.5px;color:var(--ink);cursor:pointer;
+    transition:border-color .15s ease,background .15s ease,transform .1s ease;}
+  .opt:hover{border-color:var(--frost);background:#f6fcfd;transform:translateX(2px);}
+  .opt .key{flex:0 0 auto;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+    background:#eef1f2;color:var(--ink-soft);font-size:12.5px;font-weight:700;margin-top:1px;}
+  .opt.sel{border-color:var(--rasp);background:#fff5f8;}
+  .opt.sel .key{background:var(--rasp);color:#fff;}
+
+  .qfoot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px;}
+  .hint{font-size:12.5px;color:#9aa4ab;}
+
+  .fade{animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .hero{border-radius:var(--radius) var(--radius) 0 0;padding:34px 32px 30px;color:#fff;text-align:center;}
+  .hero .big{font-size:60px;line-height:1;}
+  .hero h1{font-size:34px;margin:12px 0 2px;color:#fff;}
+  .hero .tag{font-size:15px;opacity:.92;}
+  .hero .pct{display:inline-block;margin-top:14px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);
+    border-radius:999px;padding:6px 16px;font-size:13.5px;font-weight:600;}
+
+  .sec-h{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin:0 0 12px;}
+  .bars{display:grid;gap:12px;margin:0 0 26px;}
+  .bar-row{display:grid;grid-template-columns:120px 1fr 46px;align-items:center;gap:12px;font-size:14px;}
+  .bar-row .lbl{font-weight:650;}
+  .bar-track{display:block;height:14px;border-radius:99px;background:#eef1f2;overflow:hidden;}
+  .bar-fill{display:block;height:100%;border-radius:99px;width:0;transition:width .9s cubic-bezier(.3,0,.2,1);}
+  .bar-row .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:13px;}
+
+  .traits{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;}
+  .trait{border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:600;}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+  .panel{border-radius:16px;padding:18px 20px;border:1px solid var(--line);background:#fcfcfb;}
+  .panel h3{margin:0 0 10px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .panel ul{margin:0;padding-left:18px;}
+  .panel li{margin-bottom:6px;font-size:14.5px;}
+  .panel p{margin:0;font-size:14.5px;}
+  .panel.good{background:var(--peacock-soft);border-color:#c5e4e2;}
+  .panel.watch{background:#fff4e6;border-color:#ffdcb0;}
+
+  .blend{border-left:4px solid var(--sun);background:#fffaf0;border-radius:0 14px 14px 0;padding:14px 18px;margin-bottom:22px;font-size:14.5px;}
+  .tips{background:var(--dove-soft);border:1px solid #c4e6f0;border-radius:16px;padding:18px 20px;margin-bottom:22px;}
+  .tips h3{margin:0 0 10px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--dove);}
+  .tips p{margin:0 0 9px;font-size:14.5px;} .tips p:last-child{margin-bottom:0;}
+
+  .reflect{border:1px dashed #d8d2c8;border-radius:16px;padding:18px 20px;margin-bottom:22px;background:#fffdf9;}
+  .reflect h3{margin:0 0 10px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .reflect ul{margin:0;padding-left:18px;} .reflect li{margin-bottom:6px;font-size:14.5px;}
+
+  .actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);opacity:0;
+    background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13.5px;pointer-events:none;transition:.25s;}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+  footer{text-align:center;color:#9aa4ab;font-size:12.5px;margin-top:22px;}
+
+  @media (max-width:680px){
+    .pad{padding:24px 20px;}
+    h1{font-size:25px;} .qtext{font-size:19px;} .hero h1{font-size:28px;}
+    .welcome-hero{padding:34px 22px 30px;} .welcome-hero h1{font-size:27px;}
+    .welcome-hero .sub{font-size:15px;} .flock{font-size:32px;gap:14px;}
+    .fact .n{font-size:21px;}
+    .birds{grid-template-columns:repeat(2,1fr);}
+    .grid2{grid-template-columns:1fr;}
+    .bar-row{grid-template-columns:100px 1fr 42px;font-size:13px;}
+  }
+  @media print{
+    body{background:#fff;} .sound-btn,.actions,.hint,header.top{display:none;}
+    .card{box-shadow:none;border:1px solid #ddd;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <span class="dot">🪶</span>
+      <span>D.O.P.E. Bird Test<small>Dove · Owl · Peacock · Eagle</small></span>
+    </div>
+    <button class="sound-btn" id="soundBtn" type="button"><span id="soundLbl">🔔 Sound on</span></button>
+  </header>
+
+  <!-- ================= WELCOME ================= -->
+  <section class="card fade" id="welcome">
+    <div class="welcome-hero">
+      <div class="flock"><span>🕊️</span><span>🦉</span><span>🦚</span><span>🦅</span></div>
+      <h1>Welcome to the D.O.P.E. Test</h1>
+      <p class="sub">Four birds. One honest look at how you naturally work, decide, communicate and connect with the people around you.</p>
+      <div class="meta">Dove · Owl · Peacock · Eagle</div>
+    </div>
+    <div class="pad">
+      <div class="facts">
+        <div class="fact"><div class="n">25</div><div class="l">questions</div></div>
+        <div class="fact"><div class="n">~5</div><div class="l">minutes</div></div>
+        <div class="fact"><div class="n">4</div><div class="l">bird types</div></div>
+      </div>
+
+      <p class="lede">Every one of us leans on a natural behaviour style — the way we react when a deadline moves, when someone disagrees, or when we walk into a room full of strangers. This test puts a name to yours.</p>
+
+      <p class="sec-h" style="margin-bottom:12px;">What you'll get at the end</p>
+      <ul class="checks">
+        <li><span>Your <strong>dominant bird type</strong>, with a full percentage breakdown across all four</span></li>
+        <li><span>Your <strong>secondary "wing"</strong> — the type that colours how your main style lands on others</span></li>
+        <li><span>Honest <strong>strengths and blind spots</strong>, plus how you behave under stress</span></li>
+        <li><span>Where you thrive at work, in relationships, and <strong>how others should approach you</strong></span></li>
+      </ul>
+
+      <label class="name-field">
+        <span>Your first name (optional)</span>
+        <input type="text" id="nameInput" placeholder="e.g. Alex" maxlength="30" autocomplete="given-name">
+        <small>Only used to personalise your result — nothing is sent anywhere or stored online.</small>
+      </label>
+
+      <button class="btn" id="beginBtn" type="button">Let's begin →</button>
+      <p class="hint" style="margin-top:14px;">Works offline · No sign-up · Your answers never leave this page</p>
+    </div>
+  </section>
+
+  <!-- ================= INTRO ================= -->
+  <section class="card" id="intro" hidden>
+    <div class="pad">
+      <h1>Which bird are you?</h1>
+      <p class="lede">The D.O.P.E. test sorts your natural behaviour style into one of four bird personality types — <strong>Dove, Owl, Peacock</strong> or <strong>Eagle</strong>. Answer all 25 questions with the option that feels <em>most like you on an ordinary day</em>, not the one you wish were true. You get your full profile instantly.</p>
+
+      <div class="birds">
+        <div class="bird-chip b-D"><div class="ico">🕊️</div><div class="nm">Dove</div><div class="ds">Gentle, loyal, harmony-seeking</div></div>
+        <div class="bird-chip b-O"><div class="ico">🦉</div><div class="nm">Owl</div><div class="ds">Logical, precise, strategic</div></div>
+        <div class="bird-chip b-P"><div class="ico">🦚</div><div class="nm">Peacock</div><div class="ds">Expressive, social, creative</div></div>
+        <div class="bird-chip b-E"><div class="ico">🦅</div><div class="nm">Eagle</div><div class="ds">Decisive, driven, independent</div></div>
+      </div>
+
+      <div class="note"><strong>Before you start:</strong> there is no "best" bird — every type has real strengths and real blind spots, and most people are a blend of a dominant type with a secondary "wing". This is a self-awareness and teamwork tool, not a clinical or diagnostic assessment.</div>
+
+      <button class="btn" id="startBtn" type="button">Start the 25 questions →</button>
+      <p class="hint" style="margin-top:14px;">About 5 minutes · Tip: press keys 1–4 to answer quickly, ← to go back</p>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section class="card" id="quiz" hidden>
+    <div class="pad">
+      <div class="prog-row"><span id="progLbl">Question 1 of 25</span><span id="progPct">0%</span></div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+
+      <div id="qbody" style="margin-top:26px;">
+        <div class="qnum" id="qnum">Question 1</div>
+        <p class="qtext" id="qtext"></p>
+        <div class="opts" id="opts"></div>
+      </div>
+
+      <div class="qfoot">
+        <button class="btn ghost" id="backBtn" type="button">← Back</button>
+        <span class="hint">Pick the closest match — your first instinct is usually the honest one</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="result" hidden></section>
+
+  <footer>D.O.P.E. bird personality framework · for self-reflection, communication and team dynamics</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   BIRD PROFILES
+   ============================================================ */
+const BIRDS = {
+  E:{name:'Eagle', emoji:'🦅', tag:'The Decisive Leader', color:'#d81159', soft:'#fde4ec',
+     grad:'linear-gradient(135deg,#d81159,#8f2d56)',
+     traits:['Strong-willed','Visionary','Competitive','Independent','Decisive','Direct','Results-oriented'],
+     blurb:'Eagles are natural leaders — confident, determined and purposeful. You hold a clear picture of where you are going and you work hard to get there, preferring to make the call and correct course in flight rather than wait for perfect information. You are a motivated self-starter who comes alive when given real responsibility, and you value independence and the freedom to choose your own path.',
+     strengths:['Decides fast and owns the consequences','Thrives under pressure and tight deadlines','Says the hard thing others are avoiding','Takes charge when a situation has stalled','Comfortable with risk, change and competition'],
+     watch:['Can steamroll quieter people without noticing','Impatience reads as harshness or dismissal','Moves before the details have been checked','Delegating feels slower than doing it yourself','Rarely acknowledges effort — only results'],
+     rel:'You value honesty and integrity, and you want people who can keep up with your intensity and support your need for autonomy. Because independence comes so naturally, emotional intimacy and slowing down can be the harder work.',
+     career:'Leadership roles where you can chart your own course: entrepreneurship, business, politics, coaching, sales and business development.',
+     bestWhen:'you are given a clear goal, genuine authority and room to move — then left alone to deliver.',
+     others:'Be brief, be bright, be gone. Lead with the bottom line, offer options instead of instructions, and never open with a long warm-up.',
+     stress:'you get blunt, take over, and burn through people to protect the deadline. The fix is to slow down for one conversation, not add one more task.'},
+
+  P:{name:'Peacock', emoji:'🦚', tag:'The Expressive Creative', color:'#218380', soft:'#ddf0ef',
+     grad:'linear-gradient(135deg,#218380,#73d2de)',
+     traits:['Expressive','Imaginative','Emotional','Intuitive','Unconventional','Idealistic','Free-spirited'],
+     blurb:'Peacocks are the colourful, expressive type. You see the world in vivid hues, think out loud, and long to do things in a way that is original and unmistakably yours. You are guided by feeling and intuition more than cold logic, and you draw energy from people, recognition and variety — while routine and predictability quietly flatten you.',
+     strengths:['Persuades, pitches and energises a room','Optimistic — keeps morale up when things wobble','Builds relationships and networks effortlessly','Creative, spontaneous, comfortable improvising','Makes newcomers feel instantly welcome'],
+     watch:['Over-promises in the moment, scrambles later','Detail and follow-through can slip','Talks more than listens when excited','Takes criticism personally and visibly','Loses interest once the exciting phase ends'],
+     rel:'You seek people who appreciate your originality and back your creative side. You thrive on close connections where you can voice your deepest feelings and dreams — and you find rigid routine hard to live inside.',
+     career:'Work with creative freedom and self-expression: art, design, photography, writing, music, acting, marketing, counselling and the helping professions.',
+     bestWhen:'there are people to work with, visible recognition, variety, and freedom from rigid process.',
+     others:'Be warm, be social, leave room for their ideas. Put the people and the possibility first — then pin the specifics down in writing before the conversation ends.',
+     stress:'you get scattered, over-commit and go looking for reassurance. The fix is to write the list down and protect two quiet hours.'},
+
+  D:{name:'Dove', emoji:'🕊️', tag:'The Steady Peacemaker', color:'#2b8fa8', soft:'#e2f4f9',
+     grad:'linear-gradient(135deg,#2b8fa8,#73d2de)',
+     traits:['Kind','Loyal','Empathetic','Patient','Accommodating','Diplomatic','Idealistic'],
+     blurb:'Doves have a gentle, peaceful spirit. You are friendly, cooperative and genuinely caring — you listen properly, keep your promises, and notice when somebody has gone quiet. You avoid conflict and work for harmony in every relationship you are part of, guided by loyalty and a strong internal sense of what is right.',
+     strengths:['Listens properly and makes people feel safe','Loyal and dependable over the long run','Defuses conflict instead of escalating it','Patient teacher and generous collaborator','Follows through on exactly what was agreed'],
+     watch:['Avoids necessary conflict until it grows','Says yes too often and absorbs the overload','Resists change even when it is clearly needed','Under-sells own contribution and gets overlooked','Holds quiet resentment rather than voicing it early'],
+     rel:'You value emotional connection above almost everything, and you are at your best in bonds built on mutual care, trust and respect — where affection is expressed openly and nobody is keeping score.',
+     career:'Collaborative, service-oriented work: healthcare, counselling, teaching, HR, customer service, and the non-profit sector.',
+     bestWhen:'expectations are stable, relationships are genuine, and change is explained before it arrives.',
+     others:'Be personal, be patient, be sincere. Ask how they are before what they have done, give notice ahead of change, and actively invite the opinion they are too polite to volunteer.',
+     stress:'you go quiet, agree outwardly and withdraw inwardly. The fix is to name one thing you need, out loud, early.'},
+
+  O:{name:'Owl', emoji:'🦉', tag:'The Analytical Strategist', color:'#8f2d56', soft:'#f7e7ed',
+     grad:'linear-gradient(135deg,#8f2d56,#d81159)',
+     traits:['Knowledgeable','Observant','Strategic','Prepared','Logical','Detail-oriented','Inquisitive'],
+     blurb:'Owls are the rational, analytical type. You love learning and thinking, and you value logic, precision and competence. You look at the world through an objective lens and almost always have a strategy in mind — you are at your happiest analysing information, spotting the pattern everyone else missed, and solving the problem properly the first time.',
+     strengths:['Rigorous, accurate and evidence-driven','Spots risks and flaws long before others do','Builds systems and standards that hold up','Stays calm and objective in emotional situations','Delivers work that rarely needs re-doing'],
+     watch:['Analysis paralysis — perfect beats done','Critique lands colder than you intended','Slow to commit while data is incomplete','Gets lost in detail others consider trivial','Reluctant to share work before it is polished'],
+     rel:'You look for intelligent people who can hold a real discussion. You are not especially demonstrative — you show care through practical, useful acts — and shared interests plus a steady routine are what help you open up.',
+     career:'Work that rewards intellectual rigour: research, data and analysis, engineering, accounting, law, science and technology.',
+     bestWhen:'quality standards are clear, there is time to do it properly, and your expertise is respected.',
+     others:'Be precise, be prepared, bring the data. Give an Owl the specifics and the deadline in advance, avoid surprise decisions, and never push for a snap answer.',
+     stress:'you retreat into detail, over-check and go silent. The fix is to set a "good enough" line in advance and ship at it.'}
+};
+
+/* Complementary / tension pairs */
+const PAIRS = {
+  'D-P':'Doves and Peacocks complement each other naturally — you both lead with emotion and relationships.',
+  'E-O':'Eagles and Owls bond over rationality and strategy, but two strong wills can clash when the data and the deadline disagree.',
+  'E-P':'Eagles and Peacocks share pace and boldness — together you move fast, so somebody still has to check the detail.',
+  'D-O':'Doves and Owls share patience and care for doing things properly, but you can both go quiet instead of pushing back.',
+  'E-D':'Eagle drive with Dove warmth is a rare combination — decisive when it matters, but genuinely considerate about how the decision lands.',
+  'O-P':'Owl rigour with Peacock expression is unusual — you can both build the thing properly and make people care about it.'
+};
+
+/* ============================================================
+   QUESTIONS — 1–20 as supplied, 21–25 from the classic stem set
+   ============================================================ */
+const QUESTIONS = [
+ {q:"When starting a new project at work, I usually:", a:[
+   ['D',"Make sure everyone on the team feels comfortable before diving in"],
+   ['O',"Research the details and put together a careful plan first"],
+   ['P',"Get excited and start brainstorming ideas with others"],
+   ['E',"Jump straight in and start making decisions fast"]]},
+
+ {q:"In a group discussion, I tend to:", a:[
+   ['E',"Take the lead and push toward a decision"],
+   ['P',"Talk enthusiastically and keep the energy up"],
+   ['D',"Listen carefully and make sure everyone gets heard"],
+   ['O',"Stay quiet until I've thought things through"]]},
+
+ {q:"When faced with a tight deadline, I:", a:[
+   ['O',"Double-check my work even if it takes longer"],
+   ['D',"Stay calm and just keep steadily working through it"],
+   ['E',"Push hard and prioritise getting it done fast"],
+   ['P',"Rally others and turn it into a team sprint"]]},
+
+ {q:"My ideal work environment is one that is:", a:[
+   ['P',"Fun, social, and full of new people and ideas"],
+   ['E',"Fast-paced, competitive, and results-focused"],
+   ['D',"Stable, friendly, and low-conflict"],
+   ['O',"Quiet, organised, and detail-focused"]]},
+
+ {q:"When someone disagrees with me, I usually:", a:[
+   ['D',"Try to find common ground and keep the peace"],
+   ['E',"Stand my ground and argue my point directly"],
+   ['O',"Ask for the evidence or logic behind their view"],
+   ['P',"Try to win them over with enthusiasm and charm"]]},
+
+ {q:"My friends would probably describe me as:", a:[
+   ['E',"Bold and decisive"],
+   ['O',"Thoughtful and precise"],
+   ['D',"Warm and dependable"],
+   ['P',"Fun and outgoing"]]},
+
+ {q:"When making an important decision, I rely most on:", a:[
+   ['O',"Facts, data, and careful analysis"],
+   ['P',"My gut feeling and excitement about the possibilities"],
+   ['D',"How it will affect the people I care about"],
+   ['E',"What will get the best results, fastest"]]},
+
+ {q:"In social situations, I feel most comfortable:", a:[
+   ['P',"Being the centre of attention and meeting new people"],
+   ['D',"Chatting one-on-one with people I already know"],
+   ['E',"Networking with a clear purpose in mind"],
+   ['O',"Observing quietly before joining in"]]},
+
+ {q:"When I make a mistake, I typically:", a:[
+   ['O',"Analyse exactly what went wrong so it doesn't happen again"],
+   ['E',"Move on quickly and focus on fixing it"],
+   ['D',"Feel bad about how it may have affected others"],
+   ['P',"Laugh it off and stay positive"]]},
+
+ {q:"My approach to rules and procedures is:", a:[
+   ['O',"I follow them closely; they exist for good reason"],
+   ['E',"I follow them if they help me get results faster"],
+   ['D',"I follow them to keep things fair and harmonious"],
+   ['P',"I bend them if a better, more exciting idea comes along"]]},
+
+ {q:"When leading a team, I focus on:", a:[
+   ['E',"Setting clear goals and driving toward results"],
+   ['P',"Inspiring and motivating everyone with enthusiasm"],
+   ['D',"Making sure everyone feels supported and included"],
+   ['O',"Making sure every detail is planned and correct"]]},
+
+ {q:"When plans suddenly change, I:", a:[
+   ['D',"Need a little time to adjust but stay cooperative"],
+   ['O',"Feel uneasy until I can re-plan carefully"],
+   ['P',"Roll with it and get excited about new possibilities"],
+   ['E',"Adapt quickly and refocus on the new goal"]]},
+
+ {q:"I get the most satisfaction from:", a:[
+   ['O',"Solving a complex problem correctly"],
+   ['D',"Helping someone or strengthening a relationship"],
+   ['P',"Being recognised and appreciated by others"],
+   ['E',"Achieving a goal or winning a challenge"]]},
+
+ {q:"When giving feedback to others, I tend to be:", a:[
+   ['E',"Direct and to the point"],
+   ['D',"Gentle and encouraging"],
+   ['O',"Precise and detailed"],
+   ['P',"Positive and enthusiastic"]]},
+
+ {q:"Under stress, I'm most likely to:", a:[
+   ['P',"Talk it out with someone to feel better"],
+   ['E',"Get impatient and push through it"],
+   ['O',"Withdraw and think it over carefully"],
+   ['D',"Go quiet and try to avoid conflict"]]},
+
+ {q:"My idea of a productive weekend includes:", a:[
+   ['D',"Relaxing time with close family or friends"],
+   ['P',"Going out, socialising, or trying something new"],
+   ['O',"Organising, planning, or learning something in depth"],
+   ['E',"Getting things done and crossing tasks off my list"]]},
+
+ {q:"When I disagree with a decision at work, I:", a:[
+   ['E',"Speak up right away and push for change"],
+   ['O',"Gather evidence before raising my concerns"],
+   ['D',"Wait for the right moment to bring it up gently"],
+   ['P',"Rally others to share their opinions too"]]},
+
+ {q:"I would describe my communication style as:", a:[
+   ['O',"Careful and precise"],
+   ['P',"Expressive and animated"],
+   ['E',"Blunt and efficient"],
+   ['D',"Warm and diplomatic"]]},
+
+ {q:"When starting something new (a hobby, class, or job), I'm most excited about:", a:[
+   ['P',"Meeting new people and having new experiences"],
+   ['E',"The challenge and the chance to succeed"],
+   ['D',"Building steady, lasting relationships"],
+   ['O',"Learning how everything works in detail"]]},
+
+ {q:"If I had to pick one word to describe myself, it would be:", a:[
+   ['D',"Loyal"],
+   ['O',"Precise"],
+   ['P',"Enthusiastic"],
+   ['E',"Driven"]]},
+
+ {q:"Physically, I tend to:", a:[
+   ['E',"Move fast and purposefully — always heading somewhere"],
+   ['P',"Move quickly and animatedly, with lots of gestures"],
+   ['D',"Move slowly and steadily, in a relaxed way"],
+   ['O',"Move deliberately and methodically, one thing at a time"]]},
+
+ {q:"When it comes to work ethic, I would describe myself as:", a:[
+   ['E',"Goal-driven — I work flat out until it's won"],
+   ['P',"Inspired — I work in bursts of energy, best alongside others"],
+   ['D',"Steady — a consistent, reliable pace, day in and day out"],
+   ['O',"Exacting — I won't hand it over until it's genuinely right"]]},
+
+ {q:"When you consider your friendships, do you feel you:", a:[
+   ['P',"Have a wide circle and know a great many people"],
+   ['D',"Have a few deep friendships that last for years"],
+   ['E',"Have friends who respect you and challenge you"],
+   ['O',"Have a small, trusted group who think like you do"]]},
+
+ {q:"When you go on a trip, do you prefer:", a:[
+   ['E',"To book it and go — the details sort themselves out"],
+   ['P',"Spontaneity, and seeing where the day takes you"],
+   ['D',"Whatever suits the people you're travelling with"],
+   ['O',"A detailed itinerary, bookings confirmed, backup plan ready"]]},
+
+ {q:"When it comes to meeting new people, do you:", a:[
+   ['P',"Introduce yourself to everyone and enjoy every minute"],
+   ['E',"Seek out the most interesting or useful person in the room"],
+   ['D',"Wait to be introduced, then warm up slowly"],
+   ['O',"Observe first, and engage once you've sized things up"]]}
+];
+
+/* ============================================================
+   STATE + HELPERS
+   ============================================================ */
+let idx = 0;
+const answers = new Array(QUESTIONS.length).fill(null);
+let soundOn = true;
+let userName = '';
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+try { if (localStorage.getItem('dope_sound') === 'off') soundOn = false; } catch(e){}
+
+/* ---------- sound: gentle ascending arpeggio ---------- */
+function playTones(notes, type, vol, dur, gap){
+  if (!soundOn) return;
+  try{
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    notes.forEach((f,i) => {
+      const t = ctx.currentTime + i*gap;
+      const osc = ctx.createOscillator(), g = ctx.createGain();
+      osc.type = type; osc.frequency.setValueAtTime(f, t);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol, t + 0.035);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(t); osc.stop(t + dur + 0.05);
+    });
+    setTimeout(() => { try{ ctx.close(); }catch(e){} }, (notes.length*gap + dur)*1000 + 400);
+  }catch(e){}
+}
+const chime = () => playTones([523.25, 659.25, 783.99, 1046.50], 'triangle', 0.16, 0.55, 0.13);
+const tick  = () => playTones([880], 'sine', 0.06, 0.13, 0);
+
+function setSoundLbl(){ $('soundLbl').textContent = soundOn ? '🔔 Sound on' : '🔕 Sound off'; }
+$('soundBtn').addEventListener('click', () => {
+  soundOn = !soundOn;
+  try{ localStorage.setItem('dope_sound', soundOn ? 'on' : 'off'); }catch(e){}
+  setSoundLbl(); if (soundOn) tick();
+});
+setSoundLbl();
+
+/* ============================================================
+   QUIZ FLOW
+   ============================================================ */
+function beginTest(){
+  userName = ($('nameInput').value || '').trim().slice(0, 30);
+  $('welcome').hidden = true;
+  $('intro').hidden = false;
+  $('intro').classList.add('fade');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+$('beginBtn').addEventListener('click', beginTest);
+$('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); beginTest(); } });
+
+$('startBtn').addEventListener('click', () => {
+  $('intro').hidden = true; $('quiz').hidden = false;
+  idx = 0; render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+function render(){
+  const q = QUESTIONS[idx], total = QUESTIONS.length;
+  $('progLbl').textContent = 'Question ' + (idx+1) + ' of ' + total;
+  const pct = Math.round(idx / total * 100);
+  $('progPct').textContent = pct + '%';
+  $('progFill').style.width = pct + '%';
+  $('qnum').textContent = 'Question ' + (idx+1);
+  $('qtext').textContent = q.q;
+
+  const box = $('opts'); box.innerHTML = '';
+  q.a.forEach((pair, i) => {
+    const [key, text] = pair;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'opt' + (answers[idx] === i ? ' sel' : '');
+    const k = document.createElement('span'); k.className = 'key'; k.textContent = i+1;
+    const s = document.createElement('span'); s.textContent = text;
+    btn.appendChild(k); btn.appendChild(s);
+    btn.addEventListener('click', () => choose(i));
+    box.appendChild(btn);
+  });
+
+  $('backBtn').disabled = idx === 0;
+  $('qbody').classList.remove('fade'); void $('qbody').offsetWidth; $('qbody').classList.add('fade');
+}
+
+function choose(i){
+  answers[idx] = i;
+  tick();
+  [...$('opts').children].forEach((el,n) => el.classList.toggle('sel', n === i));
+  setTimeout(() => {
+    if (idx < QUESTIONS.length - 1){ idx++; render(); } else { showResult(); }
+  }, 240);
+}
+
+$('backBtn').addEventListener('click', () => { if (idx > 0){ idx--; render(); } });
+
+document.addEventListener('keydown', e => {
+  if ($('quiz').hidden) return;
+  if (['1','2','3','4'].includes(e.key)) choose(parseInt(e.key,10) - 1);
+  else if (e.key === 'ArrowLeft' && idx > 0){ idx--; render(); }
+});
+
+/* ============================================================
+   RESULT
+   ============================================================ */
+function showResult(){
+  const total = QUESTIONS.length;
+  const t = {E:0,P:0,D:0,O:0};
+  answers.forEach((choice, qi) => { if (choice !== null) t[QUESTIONS[qi].a[choice][0]]++; });
+
+  const ranked = ['E','P','D','O'].sort((a,b) => t[b] - t[a]);
+  const top = ranked[0], second = ranked[1];
+  const b = BIRDS[top], b2 = BIRDS[second];
+  const topPct = Math.round(t[top]/total*100);
+  const tied = t[second] === t[top];
+
+  const pairKey = [top, second].sort().join('-');
+  const pairNote = PAIRS[pairKey] || '';
+
+  const li = arr => arr.map(x => '<li>' + x + '</li>').join('');
+
+  const barRows = ranked.map(k => {
+    const bb = BIRDS[k], pc = Math.round(t[k]/total*100);
+    return '<div class="bar-row">' +
+      '<span class="lbl" style="color:' + bb.color + '">' + bb.emoji + ' ' + bb.name + '</span>' +
+      '<span class="bar-track"><span class="bar-fill" data-w="' + pc + '" style="background:' + bb.grad + '"></span></span>' +
+      '<span class="val">' + pc + '%</span></div>';
+  }).join('');
+
+  const traitChips = b.traits.map(x =>
+    '<span class="trait" style="background:' + b.soft + ';color:' + b.color + '">' + x + '</span>').join('');
+
+  const blend = tied
+    ? '<strong>It\'s a tie.</strong> You scored equally as ' + b.emoji + ' ' + b.name + ' and ' + b2.emoji + ' ' + b2.name +
+      ' (' + t[top] + ' answers each). That usually means you genuinely switch styles by context — read both profiles and notice which one shows up when you are under pressure. That one is your true default. ' + pairNote
+    : '<strong>Your secondary "wing" is ' + b2.emoji + ' ' + b2.name + ' (' + Math.round(t[second]/total*100) + '%).</strong> ' +
+      'Most people have a dominant type plus a secondary one that colours how it lands — your ' + b.name + ' style leads, with ' + b2.name +
+      ' traits shaping the delivery. ' + pairNote;
+
+  $('result').innerHTML =
+   '<div class="card fade">' +
+     '<div class="hero" style="background:' + b.grad + '">' +
+       (userName ? '<div class="hero-eyebrow">' + esc(userName) + "'s result</div>" : '') +
+       '<div class="big">' + b.emoji + '</div>' +
+       '<h1>' + (userName ? esc(userName) + ', you are the ' : 'You are the ') + b.name + '</h1>' +
+       '<div class="tag">' + b.tag + '</div>' +
+       '<div class="pct">' + topPct + '% ' + b.name + ' · ' + t[top] + ' of ' + total + ' answers</div>' +
+     '</div>' +
+     '<div class="pad">' +
+       '<p style="font-size:16px;margin:0 0 20px;">' + b.blurb + '</p>' +
+       '<div class="traits">' + traitChips + '</div>' +
+
+       '<p class="sec-h">Your full bird profile</p>' +
+       '<div class="bars">' + barRows + '</div>' +
+       '<div class="blend">' + blend + '</div>' +
+
+       '<div class="grid2">' +
+         '<div class="panel good"><h3>Natural strengths</h3><ul>' + li(b.strengths) + '</ul></div>' +
+         '<div class="panel watch"><h3>Blind spots to watch</h3><ul>' + li(b.watch) + '</ul></div>' +
+       '</div>' +
+
+       '<div class="grid2">' +
+         '<div class="panel"><h3>In relationships</h3><p>' + b.rel + '</p></div>' +
+         '<div class="panel"><h3>Where you thrive at work</h3><p>' + b.career + '</p></div>' +
+       '</div>' +
+
+       '<div class="tips">' +
+         '<h3>Working with a ' + b.name + '</h3>' +
+         '<p><strong>You do your best work when</strong> ' + b.bestWhen + '</p>' +
+         '<p><strong>How others should approach you:</strong> ' + b.others + '</p>' +
+         '<p><strong>Under stress</strong> ' + b.stress + '</p>' +
+       '</div>' +
+
+       '<div class="reflect">' +
+         '<h3>Questions for self-reflection</h3>' +
+         '<ul>' +
+           '<li>Which of the ' + b.name + ' traits above resonate most — and which least?</li>' +
+           '<li>How has your ' + b.name + ' style shaped your biggest life choices so far?</li>' +
+           '<li>Which strength of the ' + b2.name + ' could you deliberately borrow this month?</li>' +
+           '<li>Who on your team covers the blind spots your type does not see?</li>' +
+         '</ul>' +
+       '</div>' +
+
+       '<div class="actions">' +
+         '<button class="btn" id="againBtn" type="button">Take it again</button>' +
+         '<button class="btn ghost" id="copyBtn" type="button">Copy my result</button>' +
+         '<button class="btn ghost" id="printBtn" type="button">Print / save as PDF</button>' +
+       '</div>' +
+     '</div>' +
+   '</div>';
+
+  $('quiz').hidden = true;
+  $('result').hidden = false;
+  window.scrollTo({top:0, behavior:'smooth'});
+
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.w + '%'; });
+  }, 150);
+  chime();
+
+  $('againBtn').addEventListener('click', () => {
+    answers.fill(null); idx = 0;
+    $('result').hidden = true; $('quiz').hidden = false;
+    render(); window.scrollTo({top:0, behavior:'smooth'});
+  });
+  $('printBtn').addEventListener('click', () => window.print());
+  $('copyBtn').addEventListener('click', () => {
+    const txt = (userName ? userName + "'s" : 'My') + ' D.O.P.E. bird type: ' + b.name + ' ' + b.emoji + ' — ' + b.tag + '\n' +
+      ranked.map(k => BIRDS[k].name + ': ' + Math.round(t[k]/total*100) + '%').join(' · ') +
+      '\nSecondary wing: ' + b2.name + ' ' + b2.emoji;
+    if (navigator.clipboard && navigator.clipboard.writeText)
+      navigator.clipboard.writeText(txt).then(() => toast('Result copied to clipboard'), () => fallbackCopy(txt));
+    else fallbackCopy(txt);
+  });
+}
+
+function fallbackCopy(txt){
+  const ta = document.createElement('textarea');
+  ta.value = txt; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); toast('Result copied to clipboard'); }
+  catch(e){ toast('Copy failed — please select the text manually'); }
+  document.body.removeChild(ta);
+}
+
+let toastTimer;
+function toast(msg){
+  const el = $('toast'); el.textContent = msg; el.classList.add('on');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 1900);
+}
+</script>
+</body>
+</html>
